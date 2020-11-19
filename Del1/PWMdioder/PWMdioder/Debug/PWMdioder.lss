@@ -1,0 +1,205 @@
+
+PWMdioder.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000000  00800100  00800100  0000016c  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         00000118  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .comment      00000030  00000000  00000000  0000016c  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  0000019c  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000020  00000000  00000000  000001d8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000768  00000000  00000000  000001f8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 00000682  00000000  00000000  00000960  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   000002c2  00000000  00000000  00000fe2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000024  00000000  00000000  000012a4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000003bf  00000000  00000000  000012c8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    0000010e  00000000  00000000  00001687  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000028  00000000  00000000  00001795  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 34 00 	jmp	0x68	; 0x68 <__ctors_end>
+   4:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   8:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  10:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  14:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  18:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  1c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  20:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  24:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  28:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  2c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  30:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  34:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  38:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  3c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  40:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  44:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  48:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  4c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  50:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  54:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  58:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  5c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  60:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  64:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+
+00000068 <__ctors_end>:
+  68:	11 24       	eor	r1, r1
+  6a:	1f be       	out	0x3f, r1	; 63
+  6c:	cf ef       	ldi	r28, 0xFF	; 255
+  6e:	d4 e0       	ldi	r29, 0x04	; 4
+  70:	de bf       	out	0x3e, r29	; 62
+  72:	cd bf       	out	0x3d, r28	; 61
+  74:	0e 94 40 00 	call	0x80	; 0x80 <main>
+  78:	0c 94 8a 00 	jmp	0x114	; 0x114 <_exit>
+
+0000007c <__bad_interrupt>:
+  7c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000080 <main>:
+	WGM13-10 setter hvilken modus timeren er i, i denne
+    modusen er timeren satt til 10bit-fastPWM med TOP på 1023
+	CS10 setter prescaleren N til 1, 
+	som gir den raskest mulige frekvensen i denne modusen.
+	*/
+    DDRB |= 1 << PB1 | 1 << PB2; 
+  80:	84 b1       	in	r24, 0x04	; 4
+  82:	86 60       	ori	r24, 0x06	; 6
+  84:	84 b9       	out	0x04, r24	; 4
+	TCCR1A |= 1 << COM1A1 | 1 << COM1B1 | 1 << WGM11 | 1 << WGM10;
+  86:	e0 e8       	ldi	r30, 0x80	; 128
+  88:	f0 e0       	ldi	r31, 0x00	; 0
+  8a:	80 81       	ld	r24, Z
+  8c:	83 6a       	ori	r24, 0xA3	; 163
+  8e:	80 83       	st	Z, r24
+	TCCR1B |= 1 << WGM12 | 1 << CS10;
+  90:	e1 e8       	ldi	r30, 0x81	; 129
+  92:	f0 e0       	ldi	r31, 0x00	; 0
+  94:	80 81       	ld	r24, Z
+  96:	89 60       	ori	r24, 0x09	; 9
+  98:	80 83       	st	Z, r24
+	OCR1A = 0;                        
+  9a:	10 92 89 00 	sts	0x0089, r1	; 0x800089 <__DATA_REGION_ORIGIN__+0x29>
+  9e:	10 92 88 00 	sts	0x0088, r1	; 0x800088 <__DATA_REGION_ORIGIN__+0x28>
+	OCR1B = 1023;  //Starter OCR1A i 0 og OCR1B i 1023
+  a2:	8f ef       	ldi	r24, 0xFF	; 255
+  a4:	93 e0       	ldi	r25, 0x03	; 3
+  a6:	90 93 8b 00 	sts	0x008B, r25	; 0x80008b <__DATA_REGION_ORIGIN__+0x2b>
+  aa:	80 93 8a 00 	sts	0x008A, r24	; 0x80008a <__DATA_REGION_ORIGIN__+0x2a>
+	pulserer da 180 grader ute av fase
+	*/
+    while (1) 
+    {
+	for(int i = 0; i < 511; i++){
+			OCR1A+=2;
+  ae:	a8 e8       	ldi	r26, 0x88	; 136
+  b0:	b0 e0       	ldi	r27, 0x00	; 0
+			OCR1B-=2;
+  b2:	ea e8       	ldi	r30, 0x8A	; 138
+  b4:	f0 e0       	ldi	r31, 0x00	; 0
+#include <util/delay.h> //Inkluderer delay
+
+
+
+int main(void)
+{
+  b6:	2f ef       	ldi	r18, 0xFF	; 255
+  b8:	31 e0       	ldi	r19, 0x01	; 1
+	pulserer da 180 grader ute av fase
+	*/
+    while (1) 
+    {
+	for(int i = 0; i < 511; i++){
+			OCR1A+=2;
+  ba:	8d 91       	ld	r24, X+
+  bc:	9c 91       	ld	r25, X
+  be:	11 97       	sbiw	r26, 0x01	; 1
+  c0:	02 96       	adiw	r24, 0x02	; 2
+  c2:	11 96       	adiw	r26, 0x01	; 1
+  c4:	9c 93       	st	X, r25
+  c6:	8e 93       	st	-X, r24
+			OCR1B-=2;
+  c8:	80 81       	ld	r24, Z
+  ca:	91 81       	ldd	r25, Z+1	; 0x01
+  cc:	02 97       	sbiw	r24, 0x02	; 2
+  ce:	91 83       	std	Z+1, r25	; 0x01
+  d0:	80 83       	st	Z, r24
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  d2:	89 ef       	ldi	r24, 0xF9	; 249
+  d4:	90 e0       	ldi	r25, 0x00	; 0
+  d6:	01 97       	sbiw	r24, 0x01	; 1
+  d8:	f1 f7       	brne	.-4      	; 0xd6 <main+0x56>
+  da:	00 c0       	rjmp	.+0      	; 0xdc <main+0x5c>
+  dc:	00 00       	nop
+  de:	21 50       	subi	r18, 0x01	; 1
+  e0:	31 09       	sbc	r19, r1
+	inkrementere/dekrementere OCR1(A/B), diodene 
+	pulserer da 180 grader ute av fase
+	*/
+    while (1) 
+    {
+	for(int i = 0; i < 511; i++){
+  e2:	59 f7       	brne	.-42     	; 0xba <main+0x3a>
+  e4:	2f ef       	ldi	r18, 0xFF	; 255
+  e6:	31 e0       	ldi	r19, 0x01	; 1
+			OCR1A+=2;
+			OCR1B-=2;
+			_delay_ms(1);
+		}
+	for(int i = 0; i < 511; i++){
+		OCR1A-=2;
+  e8:	8d 91       	ld	r24, X+
+  ea:	9c 91       	ld	r25, X
+  ec:	11 97       	sbiw	r26, 0x01	; 1
+  ee:	02 97       	sbiw	r24, 0x02	; 2
+  f0:	11 96       	adiw	r26, 0x01	; 1
+  f2:	9c 93       	st	X, r25
+  f4:	8e 93       	st	-X, r24
+		OCR1B+=2;
+  f6:	80 81       	ld	r24, Z
+  f8:	91 81       	ldd	r25, Z+1	; 0x01
+  fa:	02 96       	adiw	r24, 0x02	; 2
+  fc:	91 83       	std	Z+1, r25	; 0x01
+  fe:	80 83       	st	Z, r24
+ 100:	89 ef       	ldi	r24, 0xF9	; 249
+ 102:	90 e0       	ldi	r25, 0x00	; 0
+ 104:	01 97       	sbiw	r24, 0x01	; 1
+ 106:	f1 f7       	brne	.-4      	; 0x104 <main+0x84>
+ 108:	00 c0       	rjmp	.+0      	; 0x10a <main+0x8a>
+ 10a:	00 00       	nop
+ 10c:	21 50       	subi	r18, 0x01	; 1
+ 10e:	31 09       	sbc	r19, r1
+	for(int i = 0; i < 511; i++){
+			OCR1A+=2;
+			OCR1B-=2;
+			_delay_ms(1);
+		}
+	for(int i = 0; i < 511; i++){
+ 110:	59 f7       	brne	.-42     	; 0xe8 <main+0x68>
+ 112:	d1 cf       	rjmp	.-94     	; 0xb6 <main+0x36>
+
+00000114 <_exit>:
+ 114:	f8 94       	cli
+
+00000116 <__stop_program>:
+ 116:	ff cf       	rjmp	.-2      	; 0x116 <__stop_program>
